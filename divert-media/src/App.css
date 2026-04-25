@@ -1,0 +1,7 @@
+/* All styles handled via inline styles and index.css */
+
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex !important;
+  }
+}
