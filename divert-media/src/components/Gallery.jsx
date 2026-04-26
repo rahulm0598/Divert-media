@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
+import { useBreakpoint } from '../hooks/useBreakpoint'
 import img1 from '@assets/1dir.jpg'
 import img2 from '@assets/2dir.jpg'
 import img4 from '@assets/4dir.jpg'
@@ -90,13 +91,14 @@ function MarqueeRow({ images, duration, rowHeight }) {
 export default function Gallery() {
   const titleRef = useRef(null)
   const titleInView = useInView(titleRef, { once: true, margin: '-80px' })
+  const { isMobile } = useBreakpoint()
+  const rowHeight = isMobile ? 180 : 280
 
   return (
     <section
       id="gallery"
-      style={{ background: '#fff', padding: '100px 0 120px', overflow: 'hidden' }}
+      style={{ background: '#fff', padding: isMobile ? '72px 0 80px' : '100px 0 120px', overflow: 'hidden' }}
     >
-      {/* Inject keyframe */}
       <style>{`
         @keyframes marqueeScroll {
           0%   { transform: translateX(0); }
@@ -107,7 +109,7 @@ export default function Gallery() {
       {/* Title */}
       <div
         ref={titleRef}
-        style={{ maxWidth: 1200, margin: '0 auto', padding: '0 48px', marginBottom: 56 }}
+        style={{ maxWidth: 1200, margin: '0 auto', padding: isMobile ? '0 20px' : '0 48px', marginBottom: isMobile ? 32 : 56 }}
       >
         <motion.p
           initial={{ opacity: 0, y: 16 }}
@@ -147,16 +149,15 @@ export default function Gallery() {
         transition={{ duration: 0.8, delay: 0.2 }}
         style={{ marginBottom: GAP }}
       >
-        <MarqueeRow images={row1} duration={28} rowHeight={ROW_HEIGHT} />
+        <MarqueeRow images={row1} duration={28} rowHeight={rowHeight} />
       </motion.div>
 
-      {/* Row 2 — slightly faster for depth feel */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={titleInView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.8, delay: 0.35 }}
       >
-        <MarqueeRow images={row2} duration={22} rowHeight={ROW_HEIGHT} />
+        <MarqueeRow images={row2} duration={22} rowHeight={rowHeight} />
       </motion.div>
     </section>
   )

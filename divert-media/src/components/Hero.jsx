@@ -1,12 +1,14 @@
 import { useRef, useState } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
-import video from '@assets/bulagari.mp4'
+import { useBreakpoint } from '../hooks/useBreakpoint'
+import video from '@assets/bulagari 2.mp4'
 import logo from '@assets/logo.svg'
 
 export default function Hero() {
   const ref = useRef(null)
   const videoRef = useRef(null)
   const [playing, setPlaying] = useState(true)
+  const { isMobile } = useBreakpoint()
 
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
   const y = useTransform(scrollYProgress, [0, 1], ['0%', '28%'])
@@ -113,7 +115,7 @@ export default function Hero() {
         style={{
           position: 'absolute',
           bottom: -20,
-          left: 40,
+          left: isMobile ? 16 : 40,
           zIndex: 2,
           opacity,
         }}
@@ -125,7 +127,7 @@ export default function Hero() {
           src={logo}
           alt="Divert"
           style={{
-            width: 'min(480px, 55vw)',
+            width: isMobile ? 'min(260px, 70vw)' : 'min(480px, 55vw)',
             filter: 'invert(1)',
             opacity: 0.92,
             display: 'block',
