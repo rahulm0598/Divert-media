@@ -5,6 +5,7 @@ import Services from './components/Services'
 import Reel from './components/Reel'
 import Gallery from './components/Gallery'
 import Footer from './components/Footer'
+import WhatsAppFloat from './components/WhatsAppFloat'
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
       <Reel />
       <Gallery />
       <Footer />
+      <WhatsAppFloat />
     </>
   )
 }
