@@ -6,9 +6,9 @@ import { useBreakpoint } from '../hooks/useBreakpoint'
 
 const services = [
   { num: '01', title: 'Films', items: ['Corporate films', 'Documentary films', 'Feature Films'], desc: 'We provide complete film services, including pre-production planning, cinematography, direction, editing, and post-production, delivering high-quality visual storytelling for films, commercials, and digital platforms.', images: [img2, img9] },
-  { num: '02', title: 'Content Creation', items: ['Social media content', 'Brand storytelling', 'Digital campaigns'], desc: 'Compelling content crafted for every platform — from short-form reels to long-form brand stories that engage and convert.', images: [] },
-  { num: '03', title: 'Photography', items: ['Fashion & editorial', 'Product photography', 'Portrait sessions'], desc: 'High-end photography that captures mood, personality, and brand essence with a cinematic eye.', images: [] },
-  { num: '04', title: 'Website Development', items: ['Brand websites', 'Portfolio sites', 'E-commerce'], desc: 'Pixel-perfect digital experiences — fast, beautiful, and built to convert.', images: [] },
+  { num: '02', title: 'Content Creation', items: ['Social media content', 'Brand storytelling', 'Digital campaigns'], desc: 'From social media visuals to promotional campaigns, our creative team delivers impactful content that strengthens your brand and drives audience engagement. .', images: [] },
+  { num: '03', title: 'Photography', items: ['Fashion & editorial', 'Product photography', 'Portrait sessions'], desc: 'Our photography services capture products, personalities and ephemeral moments with creativity and precision.', images: [] },
+  { num: '04', title: 'Website Development', items: ['Brand websites', 'Portfolio sites', 'E-commerce'], desc: 'We design and develop modern, user-friendly websites that combine aesthetics with performance.', images: [] },
 ]
 
 function DiamondIcon() {

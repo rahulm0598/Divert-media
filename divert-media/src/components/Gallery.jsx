@@ -1,12 +1,12 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { useBreakpoint } from '../hooks/useBreakpoint'
-import img1 from '@assets/1dir.jpg'
-import img2 from '@assets/2dir.jpg'
-import img4 from '@assets/4dir.jpg'
-import img5 from '@assets/5dir.jpg'
-import img8 from '@assets/8dir.jpg'
-import img9 from '@assets/9dir.jpg'
+import img1  from '@assets/1dir.jpg'
+import img2  from '@assets/2dir.jpg'
+import img4  from '@assets/4dir.jpg'
+import img5  from '@assets/5dir.jpg'
+import img8  from '@assets/8dir.jpg'
+import img9  from '@assets/9dir.jpg'
 import img10 from '@assets/10dir.jpg'
 import img12 from '@assets/12dir.jpg'
 import img13 from '@assets/13dir.jpg'
@@ -16,71 +16,67 @@ import img16 from '@assets/16dir.jpg'
 import img17 from '@assets/17dir.jpg'
 import img18 from '@assets/18dir.jpg'
 
-// Row 1 — portrait + landscape mix, varied widths
-const row1 = [
-  { src: img8,  w: 210 },
-  { src: img9,  w: 260 },
-  { src: img10, w: 250 },
-  { src: img12, w: 230 },
-  { src: img13, w: 250 },
-  { src: img1,  w: 220 },
-  { src: img2,  w: 240 },
-  { src: img4,  w: 230 },
+const COL_GAP = 20
+const IMG_GAP = 20
+const CONTAINER_HEIGHT = 640
+
+// Each column: width + two images with explicit heights
+const columns = [
+  { w: 250, images: [{ src: img16, h: 275 }, { src: img14, h: 205 }] },
+  { w: 305, images: [{ src: img2,  h: 255 }, { src: img15, h: 355 }] },
+  { w: 290, images: [{ src: img12, h: 265 }, { src: img13, h: 275 }] },
+  { w: 295, images: [{ src: img1,  h: 315 }, { src: img5,  h: 225 }] },
+  { w: 235, images: [{ src: img8,  h: 245 }, { src: img18, h: 215 }] },
+  { w: 275, images: [{ src: img9,  h: 275 }, { src: img10, h: 235 }] },
+  { w: 300, images: [{ src: img17, h: 245 }, { src: img4,  h: 325 }] },
 ]
 
-// Row 2 — different order, varied widths
-const row2 = [
-  { src: img18, w: 220 },
-  { src: img17, w: 310 },
-  { src: img16, w: 230 },
-  { src: img15, w: 330 },
-  { src: img14, w: 230 },
-  { src: img5,  w: 240 },
-  { src: img13, w: 250 },
-  { src: img9,  w: 260 },
-]
+const totalTrackWidth = columns.reduce((acc, c) => acc + c.w + COL_GAP, 0)
 
-const ROW_HEIGHT = 280
-const GAP = 14
-
-function MarqueeRow({ images, duration, rowHeight }) {
-  // Duplicate for seamless loop
-  const track = [...images, ...images]
-
-  const totalWidth = images.reduce((acc, img) => acc + img.w + GAP, 0)
+function MarqueeColumns({ scale }) {
+  const track = [...columns, ...columns]
 
   return (
     <div style={{ overflow: 'hidden', width: '100%' }}>
       <div
         style={{
           display: 'flex',
-          gap: GAP,
+          gap: COL_GAP,
           width: 'max-content',
-          animation: `marqueeScroll ${duration}s linear infinite`,
+          animation: `marqueeColumns 38s linear infinite`,
+          alignItems: 'flex-start',
         }}
       >
-        {track.map((item, i) => (
+        {track.map((col, ci) => (
           <div
-            key={i}
+            key={ci}
             style={{
-              flex: `0 0 ${item.w}px`,
-              height: rowHeight,
-              borderRadius: 18,
-              overflow: 'hidden',
-              background: '#ddd',
+              flex: `0 0 ${col.w * scale}px`,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: IMG_GAP * scale,
             }}
           >
-            <img
-              src={item.src}
-              alt={`Gallery ${i + 1}`}
-              loading="lazy"
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                display: 'block',
-              }}
-            />
+            {col.images.map((img, ii) => (
+              <div
+                key={ii}
+                style={{
+                  width: '100%',
+                  height: img.h * scale,
+                  borderRadius: 18,
+                  overflow: 'hidden',
+                  background: '#e5e5e5',
+                  flexShrink: 0,
+                }}
+              >
+                <img
+                  src={img.src}
+                  alt={`Gallery ${ci}-${ii}`}
+                  loading="lazy"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                />
+              </div>
+            ))}
           </div>
         ))}
       </div>
@@ -92,24 +88,34 @@ export default function Gallery() {
   const titleRef = useRef(null)
   const titleInView = useInView(titleRef, { once: true, margin: '-80px' })
   const { isMobile } = useBreakpoint()
-  const rowHeight = isMobile ? 180 : 280
+
+  const scale = isMobile ? 0.52 : 1
 
   return (
     <section
       id="gallery"
-      style={{ background: '#fff', padding: isMobile ? '72px 0 80px' : '100px 0 120px', overflow: 'hidden' }}
+      style={{
+        background: '#fff',
+        padding: isMobile ? '72px 0 80px' : '100px 0 120px',
+        overflow: 'hidden',
+      }}
     >
       <style>{`
-        @keyframes marqueeScroll {
+        @keyframes marqueeColumns {
           0%   { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
+          100% { transform: translateX(-${totalTrackWidth}px); }
         }
       `}</style>
 
       {/* Title */}
       <div
         ref={titleRef}
-        style={{ maxWidth: 1200, margin: '0 auto', padding: isMobile ? '0 20px' : '0 48px', marginBottom: isMobile ? 32 : 56 }}
+        style={{
+          maxWidth: 1200,
+          margin: '0 auto',
+          padding: isMobile ? '0 20px' : '0 48px',
+          marginBottom: isMobile ? 32 : 56,
+        }}
       >
         <motion.p
           initial={{ opacity: 0, y: 16 }}
@@ -142,22 +148,14 @@ export default function Gallery() {
         </motion.h2>
       </div>
 
-      {/* Row 1 */}
+      {/* Marquee */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={titleInView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.8, delay: 0.2 }}
-        style={{ marginBottom: GAP }}
+        style={{ height: CONTAINER_HEIGHT * scale, overflow: 'hidden' }}
       >
-        <MarqueeRow images={row1} duration={28} rowHeight={rowHeight} />
-      </motion.div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={titleInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.8, delay: 0.35 }}
-      >
-        <MarqueeRow images={row2} duration={22} rowHeight={rowHeight} />
+        <MarqueeColumns scale={scale} />
       </motion.div>
     </section>
   )

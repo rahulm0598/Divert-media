@@ -10,11 +10,9 @@ import homeVideo from '@assets/home page video.mp4'
 import { useBreakpoint } from '../hooks/useBreakpoint'
 
 const bullets = [
-  'Design a brand worth remembering',
-  'Story-driven web experiences that convert',
-  'Pitch decks for 9-figure raises, literally',
-  'Dedicated product designers',
-  'Output focused design sprints',
+  'Where light meets focus',
+  'Artists of light and stories',
+  'Every frame, a story',
 ]
 
 const stripImages = [img1, img2, img9, img4, img5]
@@ -100,8 +98,8 @@ export default function About() {
           transition={{ duration: 0.9, delay: 0.22, ease: [0.16, 1, 0.3, 1] }}
           style={{ fontSize: isMobile ? 'clamp(22px, 5vw, 32px)' : 'clamp(28px, 3vw, 40px)', fontWeight: 600, lineHeight: 1.3, letterSpacing: '-0.02em', marginBottom: isMobile ? 40 : 72 }}
         >
-          <span style={{ color: '#111' }}>We're not here to play it safe.</span>
-          <span style={{ color: '#aaa' }}> We're a design studio driven by curiosity, craft, and conviction.</span>
+          <span style={{ color: '#111' }}>We are passionate artists in Bangalore,</span>
+          <span style={{ color: '#aaa' }}> crafting powerful visual stories that leave lasting impressions.</span>
         </motion.p>
 
         <div style={{ borderTop: '1px solid #e5e5e5', marginBottom: isMobile ? 40 : 80 }} />

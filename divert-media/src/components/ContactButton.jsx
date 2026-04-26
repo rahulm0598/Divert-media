@@ -80,7 +80,7 @@ export default function ContactButton({ mobile = false, onClick }) {
           padding: mobile ? '14px 28px' : '8px 8px 8px 24px',
           cursor: 'pointer',
           fontSize: mobile ? 15 : 14,
-          fontFamily: 'Inter, sans-serif',
+          fontFamily: 'Neue Montreal, sans-serif',
           fontWeight: 600,
           color: '#fff',
           letterSpacing: '0.02em',

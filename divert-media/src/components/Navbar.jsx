@@ -55,7 +55,7 @@ export default function Navbar() {
           style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 2, padding: 0, zIndex: 101 }}
         >
           <img src={logo} alt="Divert" style={{ height: isMobile ? 38 : 52, filter: 'invert(1)' }} />
-          <span style={{ fontSize: 9, letterSpacing: '0.28em', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', fontFamily: 'Inter, sans-serif', fontWeight: 400, paddingLeft: 2 }}>
+          <span style={{ fontSize: 9, letterSpacing: '0.28em', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', fontFamily: 'Neue Montreal, sans-serif', fontWeight: 400, paddingLeft: 2 }}>
             Media Production
           </span>
         </button>
@@ -67,7 +67,7 @@ export default function Navbar() {
               <button
                 key={link}
                 onClick={() => scrollTo(link)}
-                style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.85)', fontSize: 15, fontFamily: 'Inter, sans-serif', fontWeight: 400, letterSpacing: '0.01em', cursor: 'pointer', padding: '4px 0', transition: 'color 0.2s', whiteSpace: 'nowrap' }}
+                style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.85)', fontSize: 15, fontFamily: 'Neue Montreal, sans-serif', fontWeight: 400, letterSpacing: '0.01em', cursor: 'pointer', padding: '4px 0', transition: 'color 0.2s', whiteSpace: 'nowrap' }}
                 onMouseEnter={e => e.target.style.color = '#fff'}
                 onMouseLeave={e => e.target.style.color = 'rgba(255,255,255,0.85)'}
               >
@@ -115,7 +115,7 @@ export default function Navbar() {
                 exit={{ opacity: 0 }}
                 transition={{ delay: i * 0.07, duration: 0.35 }}
                 onClick={() => { scrollTo(link); setMenuOpen(false) }}
-                style={{ background: 'none', border: 'none', color: '#fff', fontSize: 36, fontWeight: 700, textAlign: 'left', padding: '18px 0', borderBottom: '1px solid rgba(255,255,255,0.08)', cursor: 'pointer', letterSpacing: '-0.02em', fontFamily: 'Inter, sans-serif' }}
+                style={{ background: 'none', border: 'none', color: '#fff', fontSize: 36, fontWeight: 700, textAlign: 'left', padding: '18px 0', borderBottom: '1px solid rgba(255,255,255,0.08)', cursor: 'pointer', letterSpacing: '-0.02em', fontFamily: 'Neue Montreal, sans-serif' }}
               >
                 {link}
               </motion.button>

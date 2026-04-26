@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://api.fontshare.com/v2/css?f[]=neue-montreal@300,400,500,600,700,800,900&display=swap');
 
 *, *::before, *::after {
   box-sizing: border-box;
@@ -23,7 +23,7 @@ html {
 }
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Neue Montreal', sans-serif;
   background: var(--dark);
   color: var(--white);
   overflow-x: hidden;
