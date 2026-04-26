@@ -68,47 +68,51 @@ export default function Hero() {
       </motion.div>
 
       {/* Play / Pause button — center */}
-      <motion.button
-        onClick={togglePlay}
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 1.0, duration: 0.5 }}
-        style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          zIndex: 3,
-          width: 64,
-          height: 64,
-          borderRadius: '50%',
-          background: 'rgba(255,255,255,0.18)',
-          backdropFilter: 'blur(8px)',
-          border: '1.5px solid rgba(255,255,255,0.35)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          cursor: 'pointer',
-          color: '#fff',
-          fontSize: 20,
-          transition: 'background 0.25s',
-        }}
-        whileHover={{ scale: 1.1, background: 'rgba(255,255,255,0.28)' }}
-        whileTap={{ scale: 0.95 }}
-      >
-        {playing ? (
-          /* Pause icon */
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-            <rect x="3" y="2" width="4" height="14" rx="1" fill="white" />
-            <rect x="11" y="2" width="4" height="14" rx="1" fill="white" />
-          </svg>
-        ) : (
-          /* Play icon */
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-            <path d="M4 2L15 9L4 16V2Z" fill="white" />
-          </svg>
-        )}
-      </motion.button>
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        zIndex: 3,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        pointerEvents: 'none',
+      }}>
+        <motion.button
+          onClick={togglePlay}
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 1.0, duration: 0.5 }}
+          style={{
+            pointerEvents: 'auto',
+            width: 64,
+            height: 64,
+            borderRadius: '50%',
+            background: 'rgba(255,255,255,0.18)',
+            backdropFilter: 'blur(8px)',
+            border: '1.5px solid rgba(255,255,255,0.35)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer',
+            color: '#fff',
+            fontSize: 20,
+            transition: 'background 0.25s',
+          }}
+          whileHover={{ scale: 1.1, background: 'rgba(255,255,255,0.28)' }}
+          whileTap={{ scale: 0.95 }}
+        >
+          {playing ? (
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <rect x="3" y="2" width="4" height="14" rx="1" fill="white" />
+              <rect x="11" y="2" width="4" height="14" rx="1" fill="white" />
+            </svg>
+          ) : (
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <path d="M4 2L15 9L4 16V2Z" fill="white" />
+            </svg>
+          )}
+        </motion.button>
+      </div>
 
       {/* Bottom-left — large Divert logo watermark */}
       <motion.div

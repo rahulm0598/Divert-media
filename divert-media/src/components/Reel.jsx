@@ -12,13 +12,7 @@ export default function Reel() {
   const [isPlaying, setIsPlaying] = useState(false)
 
   const togglePlay = () => {
-    if (!videoRef.current) return
-    if (isPlaying) {
-      videoRef.current.pause()
-    } else {
-      videoRef.current.play()
-    }
-    setIsPlaying(!isPlaying)
+    setIsPlaying(prev => !prev)
   }
 
   /* ── scroll-driven expansion ── */
@@ -59,6 +53,9 @@ export default function Reel() {
           0%   { background-position: -100% center; }
           100% { background-position: 200% center; }
         }
+        video::-webkit-media-controls { display: none !important; }
+        video::-webkit-media-controls-enclosure { display: none !important; }
+        video::-webkit-media-controls-overlay-play-button { display: none !important; }
       `}</style>
 
       {/* Diagonal stripe overlay */}
@@ -110,54 +107,73 @@ export default function Reel() {
             transition={{ type: 'spring', stiffness: 200, damping: 30 }}
             onClick={togglePlay}
           >
-            {/* Video always mounted, poster shows before play */}
-            <video
-              ref={videoRef}
-              poster={img17}
-              loop
-              playsInline
-              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-              src={reelVideo}
-            />
+            {/* Thumbnail shown when paused — no video element so no native UI */}
+            {!isPlaying && (
+              <img
+                src={img17}
+                alt="Reel thumbnail"
+                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+              />
+            )}
 
-            {/* Custom play/pause button */}
-            <motion.button
-              onClick={e => { e.stopPropagation(); togglePlay() }}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={inView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              whileHover={{ scale: 1.1, background: 'rgba(255,255,255,0.32)' }}
-              whileTap={{ scale: 0.95 }}
-              style={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-                width: isMobile ? 60 : 76,
-                height: isMobile ? 60 : 76,
-                borderRadius: '50%',
-                background: 'rgba(255,255,255,0.22)',
-                backdropFilter: 'blur(10px)',
-                WebkitBackdropFilter: 'blur(10px)',
-                border: '1.5px solid rgba(255,255,255,0.4)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                cursor: 'pointer',
-                boxShadow: '0 8px 32px rgba(0,0,0,0.18)',
-              }}
-            >
-              {isPlaying ? (
-                <svg width="20" height="20" viewBox="0 0 18 18" fill="none">
-                  <rect x="3" y="2" width="4" height="14" rx="1" fill="white" />
-                  <rect x="11" y="2" width="4" height="14" rx="1" fill="white" />
-                </svg>
-              ) : (
-                <svg width="20" height="20" viewBox="0 0 18 18" fill="none" style={{ marginLeft: 3 }}>
-                  <path d="M4 2L15 9L4 16V2Z" fill="white" />
-                </svg>
-              )}
-            </motion.button>
+            {/* Video only mounted when playing */}
+            {isPlaying && (
+              <video
+                ref={videoRef}
+                autoPlay
+                loop
+                playsInline
+                disablePictureInPicture
+                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                src={reelVideo}
+              />
+            )}
+
+            {/* Custom play/pause button — always on top */}
+            <div style={{
+              position: 'absolute',
+              inset: 0,
+              zIndex: 10,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              pointerEvents: 'none',
+            }}>
+              <motion.button
+                onClick={e => { e.stopPropagation(); togglePlay() }}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={inView ? { opacity: 1, scale: 1 } : {}}
+                transition={{ duration: 0.5, delay: 0.4 }}
+                whileHover={{ scale: 1.1, background: 'rgba(255,255,255,0.32)' }}
+                whileTap={{ scale: 0.95 }}
+                style={{
+                  pointerEvents: 'auto',
+                  width: isMobile ? 60 : 76,
+                  height: isMobile ? 60 : 76,
+                  borderRadius: '50%',
+                  background: 'rgba(255,255,255,0.22)',
+                  backdropFilter: 'blur(10px)',
+                  WebkitBackdropFilter: 'blur(10px)',
+                  border: '1.5px solid rgba(255,255,255,0.4)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  boxShadow: '0 8px 32px rgba(0,0,0,0.18)',
+                }}
+              >
+                {isPlaying ? (
+                  <svg width="20" height="20" viewBox="0 0 18 18" fill="none">
+                    <rect x="3" y="2" width="4" height="14" rx="1" fill="white" />
+                    <rect x="11" y="2" width="4" height="14" rx="1" fill="white" />
+                  </svg>
+                ) : (
+                  <svg width="20" height="20" viewBox="0 0 18 18" fill="none" style={{ marginLeft: 3 }}>
+                    <path d="M4 2L15 9L4 16V2Z" fill="white" />
+                  </svg>
+                )}
+              </motion.button>
+            </div>
           </motion.div>
         </div>
 
