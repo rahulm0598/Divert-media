@@ -1,13 +1,25 @@
 import { useRef, useState } from 'react'
 import { motion, useScroll, useTransform, useInView } from 'framer-motion'
 import img17 from '@assets/17dir.jpg'
+import reelVideo from '@assets/bulagari.mp4'
 import { useBreakpoint } from '../hooks/useBreakpoint'
 
 export default function Reel() {
   const sectionRef = useRef(null)
+  const videoRef = useRef(null)
   const inView = useInView(sectionRef, { once: true, margin: '-80px' })
   const { isMobile } = useBreakpoint()
   const [isPlaying, setIsPlaying] = useState(false)
+
+  const togglePlay = () => {
+    if (!videoRef.current) return
+    if (isPlaying) {
+      videoRef.current.pause()
+    } else {
+      videoRef.current.play()
+    }
+    setIsPlaying(!isPlaying)
+  }
 
   /* ── scroll-driven expansion ── */
   const { scrollYProgress } = useScroll({
@@ -92,82 +104,60 @@ export default function Reel() {
               cursor: 'pointer',
               boxShadow: '0 20px 60px rgba(0,0,0,0.12), 0 8px 24px rgba(0,0,0,0.08)',
               opacity: isMobile ? 1 : videoOpacity,
+              background: '#111',
             }}
             whileHover={{ scale: 1.01 }}
             transition={{ type: 'spring', stiffness: 200, damping: 30 }}
-            onClick={() => setIsPlaying(!isPlaying)}
+            onClick={togglePlay}
           >
-            {/* Video / Thumbnail */}
-            {isPlaying ? (
-              <video
-                autoPlay
-                controls
-                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-              >
-                <source src="" type="video/mp4" />
-              </video>
-            ) : (
-              <>
-                <img
-                  src={img17}
-                  alt="Showreel preview"
-                  loading="lazy"
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                    display: 'block',
-                    transition: 'transform 0.6s cubic-bezier(0.16,1,0.3,1)',
-                  }}
-                />
+            {/* Video always mounted, poster shows before play */}
+            <video
+              ref={videoRef}
+              poster={img17}
+              loop
+              playsInline
+              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+              src={reelVideo}
+            />
 
-                {/* Play button overlay */}
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.7 }}
-                  animate={inView ? { opacity: 1, scale: 1 } : {}}
-                  transition={{ duration: 0.6, delay: 0.4 }}
-                  style={{
-                    position: 'absolute',
-                    inset: 0,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    background: 'rgba(0,0,0,0.08)',
-                    transition: 'background 0.3s',
-                  }}
-                  onMouseEnter={e => { e.currentTarget.style.background = 'rgba(0,0,0,0.18)' }}
-                  onMouseLeave={e => { e.currentTarget.style.background = 'rgba(0,0,0,0.08)' }}
-                >
-                  {/* Glassmorphic play circle */}
-                  <div
-                    style={{
-                      width: isMobile ? 60 : 80,
-                      height: isMobile ? 60 : 80,
-                      borderRadius: '50%',
-                      background: 'rgba(255,255,255,0.25)',
-                      backdropFilter: 'blur(12px)',
-                      WebkitBackdropFilter: 'blur(12px)',
-                      border: '1.5px solid rgba(255,255,255,0.4)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      transition: 'transform 0.35s cubic-bezier(0.16,1,0.3,1), background 0.35s',
-                      boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
-                    }}
-                  >
-                    <svg
-                      width={isMobile ? 22 : 28}
-                      height={isMobile ? 22 : 28}
-                      viewBox="0 0 24 24"
-                      fill="white"
-                      style={{ marginLeft: 3 }}
-                    >
-                      <polygon points="6,3 20,12 6,21" />
-                    </svg>
-                  </div>
-                </motion.div>
-              </>
-            )}
+            {/* Custom play/pause button */}
+            <motion.button
+              onClick={e => { e.stopPropagation(); togglePlay() }}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={inView ? { opacity: 1, scale: 1 } : {}}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              whileHover={{ scale: 1.1, background: 'rgba(255,255,255,0.32)' }}
+              whileTap={{ scale: 0.95 }}
+              style={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                width: isMobile ? 60 : 76,
+                height: isMobile ? 60 : 76,
+                borderRadius: '50%',
+                background: 'rgba(255,255,255,0.22)',
+                backdropFilter: 'blur(10px)',
+                WebkitBackdropFilter: 'blur(10px)',
+                border: '1.5px solid rgba(255,255,255,0.4)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                boxShadow: '0 8px 32px rgba(0,0,0,0.18)',
+              }}
+            >
+              {isPlaying ? (
+                <svg width="20" height="20" viewBox="0 0 18 18" fill="none">
+                  <rect x="3" y="2" width="4" height="14" rx="1" fill="white" />
+                  <rect x="11" y="2" width="4" height="14" rx="1" fill="white" />
+                </svg>
+              ) : (
+                <svg width="20" height="20" viewBox="0 0 18 18" fill="none" style={{ marginLeft: 3 }}>
+                  <path d="M4 2L15 9L4 16V2Z" fill="white" />
+                </svg>
+              )}
+            </motion.button>
           </motion.div>
         </div>
 

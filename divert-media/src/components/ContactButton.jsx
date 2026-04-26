@@ -47,13 +47,12 @@ export default function ContactButton({ mobile = false, onClick }) {
   const springConfig = { type: 'spring', stiffness: 150, damping: 15, mass: 0.1 }
 
   return (
-    <div 
-      style={{ 
-        position: 'relative', 
-        display: 'inline-block',
+    <div
+      style={{
+        position: 'relative',
+        display: mobile ? 'block' : 'inline-block',
+        width: mobile ? '100%' : 'auto',
         zIndex: 10,
-        marginTop: mobile ? 48 : 0,
-        alignSelf: mobile ? 'flex-start' : 'auto'
       }}
     >
       <motion.button
@@ -74,10 +73,12 @@ export default function ContactButton({ mobile = false, onClick }) {
           display: 'flex',
           alignItems: 'center',
           gap: mobile ? 10 : 8,
+          width: mobile ? '100%' : 'auto',
+          justifyContent: mobile ? 'center' : 'flex-start',
           background: mobile ? 'var(--blue)' : 'rgba(255,255,255,0.06)',
           border: mobile ? 'none' : '1.5px solid rgba(255,255,255,0.2)',
           borderRadius: 999,
-          padding: mobile ? '14px 28px' : '8px 8px 8px 24px',
+          padding: mobile ? '16px 28px' : '8px 8px 8px 24px',
           cursor: 'pointer',
           fontSize: mobile ? 15 : 14,
           fontFamily: 'Neue Montreal, sans-serif',

@@ -105,28 +105,41 @@ export default function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            style={{ position: 'fixed', inset: 0, background: 'rgba(8,8,14,0.98)', zIndex: 99, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '0 32px' }}
+            style={{ position: 'fixed', inset: 0, background: 'rgba(8,8,14,0.98)', zIndex: 99, display: 'flex', flexDirection: 'column', padding: '0 32px 56px' }}
           >
-            {links.map((link, i) => (
-              <motion.button
-                key={link}
-                initial={{ opacity: 0, x: -24 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0 }}
-                transition={{ delay: i * 0.07, duration: 0.35 }}
-                onClick={() => { scrollTo(link); setMenuOpen(false) }}
-                style={{ background: 'none', border: 'none', color: '#fff', fontSize: 36, fontWeight: 700, textAlign: 'left', padding: '18px 0', borderBottom: '1px solid rgba(255,255,255,0.08)', cursor: 'pointer', letterSpacing: '-0.02em', fontFamily: 'Neue Montreal, sans-serif' }}
-              >
-                {link}
-              </motion.button>
-            ))}
-            <ContactButton 
-              mobile 
-              onClick={() => {
-                setMenuOpen(false)
-                window.open('https://wa.me/919747518380', '_blank')
-              }} 
-            />
+            {/* Nav links — vertically centered */}
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+              {links.map((link, i) => (
+                <motion.button
+                  key={link}
+                  initial={{ opacity: 0, x: -24 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ delay: i * 0.07, duration: 0.35 }}
+                  onClick={() => { scrollTo(link); setMenuOpen(false) }}
+                  style={{ background: 'none', border: 'none', color: '#fff', fontSize: 36, fontWeight: 700, textAlign: 'left', padding: '18px 0', borderBottom: '1px solid rgba(255,255,255,0.08)', cursor: 'pointer', letterSpacing: '-0.02em', fontFamily: 'Neue Montreal, sans-serif' }}
+                >
+                  {link}
+                </motion.button>
+              ))}
+            </div>
+
+            {/* Contact Us — bottom center */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ delay: 0.3, duration: 0.35 }}
+              style={{ display: 'flex', justifyContent: 'center' }}
+            >
+              <ContactButton
+                mobile
+                onClick={() => {
+                  setMenuOpen(false)
+                  window.open('https://wa.me/919747518380', '_blank')
+                }}
+              />
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
