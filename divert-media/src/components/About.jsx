@@ -166,7 +166,7 @@ export default function About() {
         initial={{ opacity: 0, y: 40 }}
         animate={stripInView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.8 }}
-        style={{ width: '100%', clipPath: isMobile ? 'inset(0)' : 'inset(-80px 0)' }}
+        style={{ width: '100%', overflow: 'hidden' }}
       >
         <div
           onMouseEnter={() => !isMobile && setRowHovered(true)}
@@ -175,34 +175,42 @@ export default function About() {
           style={{
             display: 'flex',
             justifyContent: 'center',
-            gap: isMobile ? 8 : 12,
-            height: isMobile ? 260 : 470,
-            perspective: isMobile ? 'none' : '1400px',
-            perspectiveOrigin: 'center center',
+            gap: isMobile ? 8 : 20,
+            // Fixed height — expansion is WIDER, not taller
+            height: isMobile ? 220 : 380,
             cursor: isMobile ? 'pointer' : 'default',
+            padding: isMobile ? '0 16px' : '0 20px',
+            // On hover, expand WIDER beyond viewport — first/last bleed off edges
+            margin: (isMobile ? mobileTapped : rowHovered) ? '0 -200px' : '0',
+            transition: 'margin 0.7s cubic-bezier(0.22, 1, 0.36, 1)',
           }}
         >
           {stripImages.map((src, i) => {
             const isCenter = i === CENTER_IDX
             const active = isMobile ? mobileTapped : rowHovered
-            const isSide = !isCenter && active
 
-            const cardWidth = isMobile
-              ? isCenter && mobileTapped ? '72%' : isCenter ? '52%' : 'calc(12% - 4px)'
-              : isCenter && rowHovered
-                ? '48%'
-                : 'calc(20% - 10px)'
+            // Center gets biggest flex, rest are equal
+            let cardFlex
+            if (isMobile) {
+              if (mobileTapped && isCenter) cardFlex = 4
+              else if (mobileTapped && !isCenter) cardFlex = 1
+              else cardFlex = isCenter ? 2.2 : 1
+            } else {
+              if (active && isCenter) cardFlex = 3.5
+              else if (active && !isCenter) cardFlex = 1.5
+              else cardFlex = isCenter ? 1.8 : 1
+            }
 
             return (
               <div
                 key={i}
                 style={{
-                  width: cardWidth,
+                  flex: cardFlex,
                   flexShrink: 0,
-                  flexGrow: 0,
                   height: '100%',
                   position: 'relative',
-                  transition: 'width 0.85s cubic-bezier(0.77, 0, 0.175, 1)',
+                  transition: 'flex 0.7s cubic-bezier(0.22, 1, 0.36, 1)',
+                  minWidth: 0,
                 }}
               >
                 <div
@@ -210,18 +218,12 @@ export default function About() {
                     position: 'absolute',
                     inset: 0,
                     overflow: 'hidden',
-                    borderRadius: isMobile ? 10 : 14,
+                    borderRadius: isMobile ? 12 : 24,
                     background: '#111',
-                    transformStyle: 'preserve-3d',
-                    transform: active
-                      ? isCenter
-                        ? isMobile ? 'scale(1.03)' : 'translateZ(120px)'
-                        : 'scale(1.05)'
-                      : 'translateZ(0) scale(1)',
-                    transition: 'transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.7s ease',
                     boxShadow: active
-                      ? isCenter ? '0 30px 80px rgba(0,0,0,0.5)' : '0 16px 40px rgba(0,0,0,0.35)'
-                      : '0 4px 16px rgba(0,0,0,0.1)',
+                      ? isCenter ? '0 24px 60px rgba(0,0,0,0.30)' : '0 12px 30px rgba(0,0,0,0.15)'
+                      : '0 4px 16px rgba(0,0,0,0.08)',
+                    transition: 'box-shadow 0.6s ease',
                   }}
                 >
                   {isCenter ? (
@@ -231,20 +233,21 @@ export default function About() {
                       muted
                       loop
                       playsInline
-                      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', transform: active ? 'scale(1.15)' : 'scale(1)', transition: 'transform 0.7s cubic-bezier(0.22, 1, 0.36, 1)' }}
                     />
                   ) : (
                     <img
                       src={src}
                       alt={`Work ${i + 1}`}
                       loading="lazy"
-                      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', transform: active ? 'scale(1.08)' : 'scale(1)', transition: 'transform 0.7s cubic-bezier(0.22, 1, 0.36, 1)' }}
                     />
                   )}
+                  {/* Subtle darken on side images to push center focus */}
                   <div style={{
                     position: 'absolute', inset: 0,
-                    background: isSide ? 'rgba(0,0,0,0.35)' : 'rgba(0,0,0,0)',
-                    transition: 'background 0.8s ease',
+                    background: active && !isCenter ? 'rgba(0,0,0,0.15)' : 'rgba(0,0,0,0)',
+                    transition: 'background 0.6s ease',
                     pointerEvents: 'none',
                   }} />
                 </div>
